@@ -1,17 +1,12 @@
-import React from 'react';
-import styled from 'styled-components';
-import BasicTable from './ReactTable';
+import BasicTable from "./TopCountriesTable";
+import { TableContainerStyled } from "./styles/RankingStyles";
 
-const TableContainerStyled = styled.div`
-  display: flex;
-  width: 100%;
-`
 const TableContainer = () => {
-  return(
+  return (
     <TableContainerStyled>
-      <BasicTable/>
+      <BasicTable />
     </TableContainerStyled>
-  )
-}
+  );
+};
 
-export default TableContainer
+export default TableContainer;

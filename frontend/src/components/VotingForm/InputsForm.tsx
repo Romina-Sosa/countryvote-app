@@ -1,93 +1,150 @@
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-
-const InputsFormsStyled = styled.div`
-  display: flex;
-  gap: 12px;
-`;
-
-const InputStyled = styled.input`
-  display: flex;
-  padding: 7px 14px; 
-  border-radius: 10px;
-  border: 1px solid #EFEFEF;
-`;
-
-const InputSubmitStyled = styled.input`
-  display: flex;
-  padding: 9px 16px; 
-  border-radius: 8px;
-  border: 1px solid #EFEFEF;
-  font-size: 14px;
-  font-weight: 700;
-  line-height: 20px;
-  color: white;
-  background-color: #15172A;
-
-   &:disabled {
-    background-color: #EDEDED; 
-    color: #A3A3A3;
-    cursor: not-allowed; 
-  }
-`;
+import {
+  InputsFormsStyled,
+  InputStyled,
+  SelectStyled,
+  SubmitStyled,
+} from "./styles/VotingFormStyles";
+import validator from "validator";
 
 interface InputsFormsProps {
   onFormSubmit: () => void;
 }
 
+interface Country {
+  name: string;
+}
+
 const InputsForms: React.FC<InputsFormsProps> = ({ onFormSubmit }) => {
   const [isFormValid, setIsFormValid] = useState(false);
+  const [isMailValid, setIsMailValid] = useState(false);
+  const [userVoted, setUserVoted] = useState<boolean | null>(null);
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
 
   const [inputs, setInputs] = useState({
-    username: '',
-    emailuser: '',
-    countryname: ''
+    username: "",
+    emailuser: "",
+    countryname: "",
   });
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setInputs(values => ({ ...values, [name]: value }));
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onFormSubmit();
-    alert('Form submitted');
-  };
+  useEffect(() => {
+    // Set a list with all the countries
+    const fetchCountries = async () => {
+      try {
+        const response = await fetch("https://restcountries.com/v3.1/all");
+        const data = await response.json();
+        const countriesList = data.map((country: any) => ({
+          name: country.name.common,
+        }));
+        setCountries(countriesList);
+      } catch (error) {
+        console.error("Error fetching countries:", error);
+      }
+    };
+    fetchCountries();
+  }, []);
 
   useEffect(() => {
-    const { username, emailuser, countryname } = inputs;
-    setIsFormValid(!!(username && emailuser && countryname));
+    // Checks if the user has already voted
+    if (inputs.emailuser) {
+      const checksEmail = async () => {
+        try {
+          const response = await fetch(
+            "http://localhost:5000/api/checks-email",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ emailuser: inputs.emailuser }),
+            }
+          );
+          const exist = await response.json();
+          setUserVoted(exist);
+        } catch (error) {
+          console.error("Error checking if the user has already voted:", error);
+        }
+      };
+
+      checksEmail();
+    }
+  }, [inputs.emailuser]);
+
+  useEffect(() => {
+    // Checks that all voting conditions are met
+    const { username } = inputs;
+    setIsFormValid(!!(username && isMailValid && selectedCountry && userVoted));
   }, [inputs]);
-  
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+    setInputs((values) => ({ ...values, [name]: value }));
+    if (name === "emailuser") {
+      setIsMailValid(validator.isEmail(value));
+    }
+    if (name === "countryname") {
+      setSelectedCountry(value);
+    }
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    try {
+      await fetch("http://localhost:5000/api/submit-vote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputs),
+      });
+      onFormSubmit();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit}>
-     <InputsFormsStyled>
-        <InputStyled 
-          type="text" 
+      <InputsFormsStyled>
+        <InputStyled
+          type="text"
           name="username"
           value={inputs.username}
           onChange={handleChange}
-          placeholder="Name" 
+          placeholder="Name"
         />
-        <InputStyled 
-          type="text" 
+        <InputStyled
+          type="text"
           name="emailuser"
           value={inputs.emailuser}
           onChange={handleChange}
-          placeholder="Email" 
+          placeholder="Email"
         />
-        <InputStyled 
-          type="text" 
+        <SelectStyled
           name="countryname"
           value={inputs.countryname}
           onChange={handleChange}
-          placeholder="Country" 
+        >
+          <option value="" disabled>
+            Country
+          </option>
+          {countries.map((country) => (
+            <option key={country.name} value={country.name}>
+              {country.name}
+            </option>
+          ))}
+        </SelectStyled>
+        <SubmitStyled
+          type="submit"
+          value="Submit Vote"
+          disabled={!isFormValid}
         />
-        <InputSubmitStyled type="submit" value='Submit Vote' disabled={!isFormValid}/>
       </InputsFormsStyled>
     </form>
   );
-}
+};
 
 export default InputsForms;

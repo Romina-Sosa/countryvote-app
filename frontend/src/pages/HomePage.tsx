@@ -1,20 +1,12 @@
-import React from 'react';
-import NavbarContainer from '../components/Navbar/NavbarContainer';
-import VotesFormComponent from '../components/MainContainer';
-import styled from 'styled-components';
-
-const HomePageStyled = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  gap:50px;
-`
+import NavbarContainer from "../components/Navbar/NavbarContainer";
+import VotesFormComponent from "../components/MainContainer";
+import { HomePageStyled } from "./styles/HomePageStyles";
 
 function HomePage() {
   return (
     <HomePageStyled>
-			<NavbarContainer />
-			<VotesFormComponent />
+      <NavbarContainer />
+      <VotesFormComponent />
     </HomePageStyled>
   );
 }

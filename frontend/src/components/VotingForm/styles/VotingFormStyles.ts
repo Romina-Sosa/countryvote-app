@@ -33,15 +33,15 @@ export const InputsFormsStyled = styled.div`
   gap: 12px;
 `;
 
-export const InputStyled = styled.input<{ isInvalid?: boolean }>`
+export const InputStyled = styled.input<{ $isInvalid?: boolean }>`
   display: flex;
   padding: 7px 14px;
   border-radius: 10px;
-  border: 1px solid ${(props) => (props.isInvalid ? "red" : "#efefef")};
+  border: 1px solid ${(props) => (props.$isInvalid ? "red" : "#efefef")};
 `;
 
-export const SelectStyled = styled.select<{ isPlaceHolder?: boolean }>`
-  color: ${(props) => (props.isPlaceHolder ? "#8a8c90;" : "black")};
+export const SelectStyled = styled.select<{ $isPlaceHolder?: boolean }>`
+  color: ${(props) => (props.$isPlaceHolder ? "#8a8c90;" : "black")};
   display: flex;
   padding: 7px 14px;
   border-radius: 10px;
@@ -70,14 +70,14 @@ export const SubmitStyled = styled.input`
     cursor: not-allowed;
   }
 `;
-export const ErrorIconStyled = styled.img<{ show: boolean }>`
+export const ErrorIconStyled = styled.img<{ $show: boolean }>`
   position: absolute;
   height: 1.5rem;
   width: 1.5rem;
   top: 50%;
   right: 10px;
   transform: translateY(-50%);
-  display: ${(props) => (props.show ? "block" : "none")};
+  display: ${(props) => (props.$show ? "block" : "none")};
 `;
 
 export const InputWrapperStyled = styled.div`
@@ -85,8 +85,8 @@ export const InputWrapperStyled = styled.div`
   position: relative;
 `;
 
-export const InvalidMessageStyled = styled.text<{ show: boolean }>`
-  display: ${(props) => (props.show ? "block" : "none")};
+export const InvalidMessageStyled = styled.div<{ $show: boolean }>`
+  display: ${(props) => (props.$show ? "block" : "none")};
   position: absolute;
   font-size: 14px;
   font-weight: 700;

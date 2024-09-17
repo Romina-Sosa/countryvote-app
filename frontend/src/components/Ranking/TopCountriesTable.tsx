@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 
 interface TopCountriesProps {
   query?: string;
+  voteSubmitted: boolean;
 }
 
 const TopCountries = (props: TopCountriesProps) => {
@@ -35,7 +36,7 @@ const TopCountries = (props: TopCountriesProps) => {
     };
 
     fetchTopCountries();
-  }, [props.query]);
+  }, [props.query, props.voteSubmitted]);
 
   return (
     <TableContainer

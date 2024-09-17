@@ -8,11 +8,15 @@ import {
   SubmittedVoteStyled,
 } from "./styles/VotingFormStyles";
 
-const VotingFormContainer = () => {
+interface VotingFormContainerProps {
+  onVoteSubmit: () => void;
+}
+const VotingFormContainer = ({ onVoteSubmit }: VotingFormContainerProps) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const handleFormSubmission = () => {
     setIsSubmitted(true);
+    onVoteSubmit();
   };
 
   return (

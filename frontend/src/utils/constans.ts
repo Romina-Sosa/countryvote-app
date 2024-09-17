@@ -20,4 +20,7 @@ export const TABLE_ROWS = {
   VOTES: "Votes",
 };
 
-export const InvalidEmail = "Invalid email";
+export const EMAIL_CONTENT = {
+  INVALID_EMAIL: "Invalid email",
+  EMAIL_USED: "This email has already been used",
+};

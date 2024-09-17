@@ -1,5 +1,5 @@
 import NavbarContainer from "../components/Navbar/NavbarContainer";
-import VotesFormComponent from "../components/MainContainer";
+import VotesFormComponent from "../components/MainContainer/MainContainer";
 import { HomePageStyled } from "./styles/HomePageStyles";
 
 function HomePage() {

@@ -7,7 +7,11 @@ import {
   TitleOfRankingStyled,
 } from "./styles/RankingStyles";
 
-const RankingContainer = () => {
+interface RankingContainerProps {
+  voteSubmitted: boolean;
+}
+
+const RankingContainer = ({ voteSubmitted }: RankingContainerProps) => {
   const [query, setQuery] = useState<string>("");
 
   const handleSearch = (newQuery: string) => {
@@ -20,7 +24,7 @@ const RankingContainer = () => {
         {RANKING_CONTENT.TOP_COUNTRIES}
       </TitleOfRankingStyled>
       <SearchBar onSearch={handleSearch} />
-      <TableContainer query={query} />
+      <TableContainer query={query} voteSubmitted={voteSubmitted} />
     </RankingContainerStyled>
   );
 };

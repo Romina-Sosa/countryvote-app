@@ -3,12 +3,16 @@ import { TableContainerStyled } from "./styles/RankingStyles";
 
 interface TableContainerProps {
   query?: string;
+  voteSubmitted: boolean;
 }
 
-const TableContainer: React.FC<TableContainerProps> = ({ query }) => {
+const TableContainer: React.FC<TableContainerProps> = ({
+  query,
+  voteSubmitted,
+}) => {
   return (
     <TableContainerStyled>
-      <TopCountries query={query} />
+      <TopCountries query={query} voteSubmitted={voteSubmitted} />
     </TableContainerStyled>
   );
 };

@@ -7,6 +7,7 @@ export const RankingContainerStyled = styled.div`
   flex-direction: column;
   align-items: start;
   gap: 24px;
+  font-family: "Inter", sans-serif;
 `;
 
 export const TitleOfRankingStyled = styled.div`
@@ -25,7 +26,7 @@ export const SearchBarContainer = styled.div`
   gap: 12px;
   padding: 10px 24px;
   border-radius: 8px;
-  width: 55%;
+  width: 40%;
   border: 1px solid #efefef;
 `;
 

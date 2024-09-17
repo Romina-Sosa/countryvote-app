@@ -4,8 +4,13 @@ import {
   InputStyled,
   SelectStyled,
   SubmitStyled,
+  ErrorIconStyled,
+  InputWrapperStyled,
+  InvalidMessageStyled,
 } from "./styles/VotingFormStyles";
 import validator from "validator";
+import errorIcon from "../../assets/errorIcon.svg";
+import { InvalidEmail } from "../../utils/constans";
 
 interface InputsFormsProps {
   onFormSubmit: () => void;
@@ -17,7 +22,7 @@ interface Country {
 
 const InputsForms: React.FC<InputsFormsProps> = ({ onFormSubmit }) => {
   const [isFormValid, setIsFormValid] = useState(false);
-  const [isMailValid, setIsMailValid] = useState(false);
+  const [isEmailValid, setIsEmailValid] = useState(true);
   const [userVoted, setUserVoted] = useState(false);
   const [countries, setCountries] = useState<Country[]>([]);
   const [selectedCountry, setSelectedCountry] = useState("");
@@ -75,9 +80,9 @@ const InputsForms: React.FC<InputsFormsProps> = ({ onFormSubmit }) => {
     // Checks that all voting conditions are met
     const { username } = inputs;
     setIsFormValid(
-      !!(username && isMailValid && selectedCountry && !userVoted)
+      !!(username && isEmailValid && selectedCountry && !userVoted)
     );
-  }, [inputs, isMailValid, selectedCountry, userVoted]);
+  }, [inputs, isEmailValid, selectedCountry, userVoted]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -85,7 +90,7 @@ const InputsForms: React.FC<InputsFormsProps> = ({ onFormSubmit }) => {
     const { name, value } = event.target;
     setInputs((values) => ({ ...values, [name]: value }));
     if (name === "emailuser") {
-      setIsMailValid(validator.isEmail(value));
+      setIsEmailValid(validator.isEmail(value));
     }
     if (name === "countryname") {
       setSelectedCountry(value);
@@ -108,6 +113,7 @@ const InputsForms: React.FC<InputsFormsProps> = ({ onFormSubmit }) => {
     }
   };
 
+  const isPlaceHolder = inputs.countryname === "";
   return (
     <form onSubmit={handleSubmit}>
       <InputsFormsStyled>
@@ -118,19 +124,28 @@ const InputsForms: React.FC<InputsFormsProps> = ({ onFormSubmit }) => {
           onChange={handleChange}
           placeholder="Name"
         />
-        <InputStyled
-          type="text"
-          name="emailuser"
-          value={inputs.emailuser}
-          onChange={handleChange}
-          placeholder="Email"
-        />
+        <InputWrapperStyled>
+          <InputStyled
+            type="text"
+            name="emailuser"
+            value={inputs.emailuser}
+            onChange={handleChange}
+            placeholder="Email"
+            isInvalid={!isEmailValid}
+          />
+          <ErrorIconStyled src={errorIcon} show={!isEmailValid} />
+          <InvalidMessageStyled show={!isEmailValid}>
+            {InvalidEmail}{" "}
+          </InvalidMessageStyled>
+        </InputWrapperStyled>
+
         <SelectStyled
           name="countryname"
           value={inputs.countryname}
           onChange={handleChange}
+          isPlaceHolder={isPlaceHolder}
         >
-          <option value="" disabled>
+          <option value="" disabled hidden>
             Country
           </option>
           {countries.map((country) => (

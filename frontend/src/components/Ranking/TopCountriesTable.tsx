@@ -38,25 +38,47 @@ const TopCountries = (props: TopCountriesProps) => {
   }, [props.query]);
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+    <TableContainer
+      component={Paper}
+      sx={{
+        borderRadius: "20px",
+      }}
+    >
+      <Table
+        sx={{
+          "& .MuiTableCell-root": {
+            borderBottom: "none",
+          },
+        }}
+        aria-label="simple table"
+      >
         <TableHead>
           <TableRow>
-            <TableCell align="left">{TABLE_ROWS.COUNTRY}</TableCell>
-            <TableCell align="center">{TABLE_ROWS.CAPITAL_CITY}</TableCell>
-            <TableCell align="center">{TABLE_ROWS.REGION}</TableCell>
-            <TableCell align="center">{TABLE_ROWS.SUB_REGION}</TableCell>
-            <TableCell align="right">{TABLE_ROWS.VOTES}</TableCell>
+            <TableCell align="left" sx={{ fontWeight: "bold" }}>
+              {TABLE_ROWS.COUNTRY}
+            </TableCell>
+            <TableCell align="left" sx={{ fontWeight: "bold" }}>
+              {TABLE_ROWS.CAPITAL_CITY}
+            </TableCell>
+            <TableCell align="left" sx={{ fontWeight: "bold" }}>
+              {TABLE_ROWS.REGION}
+            </TableCell>
+            <TableCell align="left" sx={{ fontWeight: "bold" }}>
+              {TABLE_ROWS.SUB_REGION}
+            </TableCell>
+            <TableCell align="center" sx={{ fontWeight: "bold" }}>
+              {TABLE_ROWS.VOTES}
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {topCountries.map((item: any) => (
             <TableRow key={item.countryname}>
               <TableCell align="left">{item.countryname}</TableCell>
-              <TableCell align="center">{item.capital}</TableCell>
-              <TableCell align="center">{item.region}</TableCell>
-              <TableCell align="center">{item.subregion}</TableCell>
-              <TableCell align="right">{item.votes}</TableCell>
+              <TableCell align="left">{item.capital}</TableCell>
+              <TableCell align="left">{item.region}</TableCell>
+              <TableCell align="left">{item.subregion}</TableCell>
+              <TableCell align="center">{item.votes}</TableCell>
             </TableRow>
           ))}
         </TableBody>

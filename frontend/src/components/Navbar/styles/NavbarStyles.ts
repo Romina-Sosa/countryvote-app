@@ -27,4 +27,5 @@ export const StyledNavbarChallenge = styled.nav`
   padding: 10px;
   display: flex;
   font-size: 14px;
+  font-family: "Montserrat", sans-serif;
 `;

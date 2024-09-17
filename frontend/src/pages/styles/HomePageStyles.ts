@@ -5,4 +5,6 @@ export const HomePageStyled = styled.div`
   flex-direction: column;
   height: 100vh;
   gap: 50px;
+  background-color: #f8f8f8;
+  padding-bottom: 10%;
 `;

@@ -16,6 +16,7 @@ exports.readJSON = readJSON;
 exports.writeJSON = writeJSON;
 exports.addNewVote = addNewVote;
 exports.getCountryData = getCountryData;
+exports.filterCountries = filterCountries;
 const promises_1 = __importDefault(require("fs/promises"));
 const axios_1 = __importDefault(require("axios"));
 function readJSON(path) {
@@ -63,6 +64,7 @@ function addNewVote(countryName, path) {
         }
         else
             all_countries[index].votes++;
+        all_countries.sort((a, b) => b.votes - a.votes);
         writeJSON(all_countries, path);
     });
 }
@@ -74,9 +76,9 @@ function getCountryData(countryName) {
             const country = response.data[0];
             return {
                 countryname: country.name.common,
+                capital: country.capital[0],
                 region: country.region,
                 subregion: country.subregion,
-                capital: country.capital[0],
                 votes: 1,
             };
         }
@@ -85,4 +87,15 @@ function getCountryData(countryName) {
             throw error;
         }
     });
+}
+function filterCountries(query, top_countries) {
+    const lowerQuery = query.trim().toLowerCase();
+    const filteredCountries = top_countries.filter((country) => {
+        var _a, _b;
+        return country.countryname.toLowerCase().includes(lowerQuery) ||
+            country.capital.toLowerCase().includes(lowerQuery) ||
+            ((_a = country.region) === null || _a === void 0 ? void 0 : _a.toLowerCase().includes(lowerQuery)) ||
+            ((_b = country.subregion) === null || _b === void 0 ? void 0 : _b.toLowerCase().includes(lowerQuery));
+    });
+    return filteredCountries;
 }

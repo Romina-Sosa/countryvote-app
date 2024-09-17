@@ -1,6 +1,14 @@
 import fs from "fs/promises";
 import axios from "axios";
 
+interface Country {
+  countryname: string;
+  capital: string;
+  region?: string;
+  subregion?: string;
+  votes: number;
+}
+
 export async function readJSON(path: string) {
   try {
     try {
@@ -41,6 +49,9 @@ export async function addNewVote(countryName: string, path: string) {
     const data = await getCountryData(countryName);
     all_countries.push(data);
   } else all_countries[index].votes++;
+  all_countries.sort(
+    (a: { votes: number }, b: { votes: number }) => b.votes - a.votes
+  );
   writeJSON(all_countries, path);
 }
 
@@ -53,13 +64,25 @@ export async function getCountryData(countryName: string) {
     const country = response.data[0];
     return {
       countryname: country.name.common,
+      capital: country.capital[0],
       region: country.region,
       subregion: country.subregion,
-      capital: country.capital[0],
       votes: 1,
     };
   } catch (error) {
     console.error("Error fetching country data");
     throw error;
   }
+}
+
+export function filterCountries(query: string, top_countries: Country[]) {
+  const lowerQuery = query.trim().toLowerCase();
+  const filteredCountries = top_countries.filter(
+    (country: Country) =>
+      country.countryname.toLowerCase().includes(lowerQuery) ||
+      country.capital.toLowerCase().includes(lowerQuery) ||
+      country.region?.toLowerCase().includes(lowerQuery) ||
+      country.subregion?.toLowerCase().includes(lowerQuery)
+  );
+  return filteredCountries;
 }

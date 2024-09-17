@@ -18,7 +18,7 @@ interface Country {
 const InputsForms: React.FC<InputsFormsProps> = ({ onFormSubmit }) => {
   const [isFormValid, setIsFormValid] = useState(false);
   const [isMailValid, setIsMailValid] = useState(false);
-  const [userVoted, setUserVoted] = useState<boolean | null>(null);
+  const [userVoted, setUserVoted] = useState(false);
   const [countries, setCountries] = useState<Country[]>([]);
   const [selectedCountry, setSelectedCountry] = useState("");
 
@@ -74,8 +74,10 @@ const InputsForms: React.FC<InputsFormsProps> = ({ onFormSubmit }) => {
   useEffect(() => {
     // Checks that all voting conditions are met
     const { username } = inputs;
-    setIsFormValid(!!(username && isMailValid && selectedCountry && userVoted));
-  }, [inputs]);
+    setIsFormValid(
+      !!(username && isMailValid && selectedCountry && !userVoted)
+    );
+  }, [inputs, isMailValid, selectedCountry, userVoted]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>

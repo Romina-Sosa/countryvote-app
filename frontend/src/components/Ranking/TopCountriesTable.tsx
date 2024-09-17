@@ -8,21 +8,25 @@ import Paper from "@mui/material/Paper";
 import { TABLE_ROWS } from "../../utils/constans";
 import { useEffect, useState } from "react";
 
-const TopCountries = () => {
+interface TopCountriesProps {
+  query?: string;
+}
+
+const TopCountries = (props: TopCountriesProps) => {
   const [topCountries, setTopCountries] = useState<string[]>([]);
+  let url = "http://localhost:5000/api/top-countries";
 
   useEffect(() => {
     const fetchTopCountries = async () => {
+      if (props.query)
+        url = `http://localhost:5000/api/search-countries?query=${props.query}`;
       try {
-        const response = await fetch(
-          "http://localhost:5000/api/top-countries",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         const result = await response.json();
         setTopCountries(result);
       } catch (error) {
@@ -31,7 +35,7 @@ const TopCountries = () => {
     };
 
     fetchTopCountries();
-  }, []);
+  }, [props.query]);
 
   return (
     <TableContainer component={Paper}>

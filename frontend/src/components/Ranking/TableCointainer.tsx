@@ -1,10 +1,14 @@
-import BasicTable from "./TopCountriesTable";
+import TopCountries from "./TopCountriesTable";
 import { TableContainerStyled } from "./styles/RankingStyles";
 
-const TableContainer = () => {
+interface TableContainerProps {
+  query?: string;
+}
+
+const TableContainer: React.FC<TableContainerProps> = ({ query }) => {
   return (
     <TableContainerStyled>
-      <BasicTable />
+      <TopCountries query={query} />
     </TableContainerStyled>
   );
 };

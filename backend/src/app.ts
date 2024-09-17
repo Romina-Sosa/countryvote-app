@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { readJSON, writeJSON, addNewVote } from "./fileUtils";
+import { readJSON, writeJSON, addNewVote, filterCountries } from "./fileUtils";
 
 const emailsUsersPath = "./src/emailsUsers.json";
 const topCountriesPath = "./src/topCountries.json";
@@ -16,6 +16,22 @@ app.get("/api/top-countries", async (req, res) => {
   let top_countries = await readJSON(topCountriesPath);
   const top10Countries = top_countries.slice(0, 10);
   res.send(top10Countries);
+});
+
+// Search for countries by name, capital, region, or subregion
+app.get("/api/search-countries", async (req, res) => {
+  const { query } = req.query;
+  try {
+    let top_countries = await readJSON(topCountriesPath);
+    const list_of_countries = await filterCountries(
+      query as string,
+      top_countries
+    );
+    const top10Countries = list_of_countries.slice(0, 10);
+    res.send(top10Countries);
+  } catch (error) {
+    res.status(500).send({ message: "Error searching countries" });
+  }
 });
 
 // Submit the new vote

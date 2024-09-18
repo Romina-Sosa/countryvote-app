@@ -37,13 +37,13 @@ app.get("/api/search-countries", async (req, res) => {
 // Submit the new vote
 app.post("/api/submit-vote", async (req, res) => {
   const { emailuser, countryname } = req.body;
-  res.status(200).send("Data received successfully");
 
   let emailsUsers = await readJSON(emailsUsersPath);
   emailsUsers.push(emailuser);
 
   await writeJSON(emailsUsers, emailsUsersPath);
   await addNewVote(countryname, topCountriesPath);
+  res.status(200).send("Data received successfully");
 });
 
 // Checks if the email already exists

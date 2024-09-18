@@ -15,12 +15,13 @@ interface TopCountriesProps {
 
 const TopCountries = (props: TopCountriesProps) => {
   const [topCountries, setTopCountries] = useState<string[]>([]);
-  let url = "http://localhost:5000/api/top-countries";
-
+  let baseUrl = "http://localhost:5000/api/top-countries";
   useEffect(() => {
     const fetchTopCountries = async () => {
-      if (props.query)
-        url = `http://localhost:5000/api/search-countries?query=${props.query}`;
+      const url = props.query
+        ? `http://localhost:5000/api/search-countries?query=${props.query}`
+        : baseUrl;
+
       try {
         const response = await fetch(url, {
           method: "GET",

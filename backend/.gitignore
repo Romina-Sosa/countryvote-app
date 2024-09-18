@@ -2,7 +2,7 @@
 /node_modules
 
 # production
-/build
+/dist
 
 # misc
 .DS_Store
@@ -14,3 +14,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# JSON files
+src/emailsUsers.json
+src/topCountries.json

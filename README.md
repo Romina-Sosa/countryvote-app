@@ -23,9 +23,17 @@ CountryVote is an app where users can vote for their favorite countries.
 After cloning the project, run
 
   ```bash
-npm install
-```
-to install all the dependencies
+  cd frontend
+  npm install
+
+  ```
+
+  ```bash
+  cd backend
+  npm install
+
+  ```
+to install all the dependencies in each project
 
 ## Usage
 
